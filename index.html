@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Saudamini Khare — Generative AI Engineer</title>
+<meta name="description" content="Saudamini Khare — Generative AI Engineer building LLM-powered applications with LangChain, AutoGen, and multi-agent workflows." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#0c0e12;
+    --panel:#13161d;
+    --panel-2:#181c25;
+    --line:#262b36;
+    --fog:#8c93a3;
+    --paper:#e9ebef;
+    --paper-dim:#aeb4c0;
+    --signal:#7af0c8;      /* mint signal */
+    --signal-deep:#34c79a;
+    --amber:#f5b656;
+    --radius:14px;
+    --maxw:1080px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:"Space Grotesk",system-ui,sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+
+  ::selection{background:var(--signal);color:#06140f}
+
+  /* ---------- ambient grid backdrop ---------- */
+  .grid-bg{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      linear-gradient(var(--line) 1px,transparent 1px),
+      linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:64px 64px;
+    opacity:.16;
+    mask-image:radial-gradient(circle at 50% 0%,#000 0%,transparent 78%);
+  }
+
+  .wrap{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:0 28px}
+
+  /* ---------- nav ---------- */
+  nav{
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(12px);
+    background:rgba(12,14,18,.72);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+  .brand{font-family:"JetBrains Mono",monospace;font-size:.82rem;letter-spacing:.04em;color:var(--paper-dim)}
+  .brand b{color:var(--signal);font-weight:500}
+  .navlinks{display:flex;gap:26px;font-size:.86rem}
+  .navlinks a{color:var(--fog);transition:color .2s}
+  .navlinks a:hover{color:var(--paper)}
+  .navlinks a::before{content:"";}
+  @media(max-width:680px){.navlinks{display:none}}
+
+  /* ---------- hero ---------- */
+  header.hero{padding:84px 0 64px;position:relative}
+  .eyebrow{
+    font-family:"JetBrains Mono",monospace;
+    font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--signal-deep);margin-bottom:22px;display:flex;align-items:center;gap:12px;
+  }
+  .eyebrow::before{content:"";width:30px;height:1px;background:var(--signal-deep)}
+  h1{
+    font-family:"Fraunces",serif;
+    font-weight:500;
+    font-size:clamp(2.6rem,7vw,5.1rem);
+    line-height:1.02;
+    letter-spacing:-.02em;
+  }
+  h1 em{font-style:italic;color:var(--signal)}
+  .lede{
+    margin-top:26px;max-width:620px;font-size:1.12rem;color:var(--paper-dim);
+  }
+  .lede b{color:var(--paper);font-weight:500}
+  .cta-row{margin-top:38px;display:flex;gap:14px;flex-wrap:wrap}
+  .btn{
+    font-family:"JetBrains Mono",monospace;font-size:.82rem;
+    padding:13px 20px;border-radius:10px;border:1px solid var(--line);
+    display:inline-flex;align-items:center;gap:9px;transition:.2s;
+  }
+  .btn.primary{background:var(--signal);color:#06140f;border-color:var(--signal);font-weight:500}
+  .btn.primary:hover{background:var(--signal-deep);transform:translateY(-2px)}
+  .btn.ghost:hover{border-color:var(--signal);color:var(--signal);transform:translateY(-2px)}
+
+  .hero-meta{
+    margin-top:54px;display:flex;gap:38px;flex-wrap:wrap;
+    font-family:"JetBrains Mono",monospace;font-size:.78rem;color:var(--fog);
+  }
+  .hero-meta div span{display:block;color:var(--paper);font-size:1.4rem;font-family:"Fraunces",serif}
+
+  /* ---------- section frame ---------- */
+  section{padding:72px 0;position:relative}
+  .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:44px}
+  .sec-no{font-family:"JetBrains Mono",monospace;font-size:.8rem;color:var(--signal-deep)}
+  .sec-title{font-family:"Fraunces",serif;font-weight:500;font-size:clamp(1.7rem,3.5vw,2.4rem);letter-spacing:-.01em}
+  .sec-rule{flex:1;height:1px;background:var(--line)}
+
+  /* ---------- about / skills split ---------- */
+  .split{display:grid;grid-template-columns:1.2fr .8fr;gap:48px}
+  @media(max-width:820px){.split{grid-template-columns:1fr;gap:36px}}
+  .about p{color:var(--paper-dim);font-size:1.05rem;margin-bottom:16px}
+  .about p b{color:var(--paper);font-weight:500}
+
+  .skillcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+  .skillcard h4{
+    font-family:"JetBrains Mono",monospace;font-size:.74rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--fog);margin-bottom:14px;
+  }
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{
+    font-family:"JetBrains Mono",monospace;font-size:.76rem;
+    padding:6px 11px;border-radius:7px;background:var(--panel-2);
+    border:1px solid var(--line);color:var(--paper-dim);transition:.18s;
+  }
+  .chip:hover{border-color:var(--signal-deep);color:var(--signal)}
+  .skillcard + .skillcard{margin-top:16px}
+
+  /* ---------- experience timeline ---------- */
+  .timeline{position:relative;padding-left:30px}
+  .timeline::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:1px;background:var(--line)}
+  .job{position:relative;padding-bottom:42px}
+  .job:last-child{padding-bottom:0}
+  .job::before{
+    content:"";position:absolute;left:-30px;top:7px;width:15px;height:15px;border-radius:50%;
+    background:var(--ink);border:2px solid var(--line);transition:.2s;
+  }
+  .job:hover::before{border-color:var(--signal);box-shadow:0 0 0 5px rgba(122,240,200,.12)}
+  .job-top{display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .job-role{font-size:1.16rem;font-weight:600}
+  .job-role span{color:var(--signal)}
+  .job-when{font-family:"JetBrains Mono",monospace;font-size:.76rem;color:var(--fog);white-space:nowrap}
+  .job-co{color:var(--paper-dim);font-size:.92rem;margin:2px 0 14px;font-family:"JetBrains Mono",monospace}
+  .job ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+  .job li{position:relative;padding-left:20px;color:var(--paper-dim);font-size:.97rem}
+  .job li::before{content:"▸";position:absolute;left:0;top:0;color:var(--signal-deep)}
+  .job li b{color:var(--paper);font-weight:600}
+
+  /* ---------- projects ---------- */
+  .proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:820px){.proj-grid{grid-template-columns:1fr}}
+  .proj{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px;transition:.22s;position:relative;overflow:hidden;
+  }
+  .proj::after{
+    content:"";position:absolute;inset:0;border-radius:var(--radius);pointer-events:none;
+    background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%),rgba(122,240,200,.07),transparent 60%);
+    opacity:0;transition:.25s;
+  }
+  .proj:hover{transform:translateY(-4px);border-color:var(--signal-deep)}
+  .proj:hover::after{opacity:1}
+  .proj-tag{font-family:"JetBrains Mono",monospace;font-size:.72rem;color:var(--amber);letter-spacing:.08em;text-transform:uppercase}
+  .proj h3{font-family:"Fraunces",serif;font-weight:500;font-size:1.32rem;margin:12px 0 10px;line-height:1.18}
+  .proj p{color:var(--paper-dim);font-size:.95rem;margin-bottom:16px}
+  .proj .metric{
+    font-family:"JetBrains Mono",monospace;font-size:.8rem;color:var(--signal);
+    border-top:1px solid var(--line);padding-top:12px;
+  }
+
+  /* ---------- publication ---------- */
+  .pub{
+    background:linear-gradient(135deg,var(--panel),var(--panel-2));
+    border:1px solid var(--line);border-radius:var(--radius);padding:30px;
+    display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;
+  }
+  .pub h3{font-family:"Fraunces",serif;font-weight:500;font-size:1.3rem;line-height:1.3;max-width:640px}
+  .pub .pub-meta{font-family:"JetBrains Mono",monospace;font-size:.78rem;color:var(--fog);margin-top:8px}
+
+  /* ---------- contact ---------- */
+  .contact{text-align:center;padding:90px 0 100px}
+  .contact h2{font-family:"Fraunces",serif;font-weight:500;font-size:clamp(2rem,5vw,3.4rem);letter-spacing:-.02em}
+  .contact h2 em{font-style:italic;color:var(--signal)}
+  .contact p{color:var(--paper-dim);margin:18px auto 34px;max-width:480px}
+  .contact-links{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+
+  footer{border-top:1px solid var(--line);padding:30px 0;color:var(--fog)}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-family:"JetBrains Mono",monospace;font-size:.76rem}
+
+  /* ---------- reveal anim ---------- */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none}
+    html{scroll-behavior:auto}
+    .proj:hover,.btn:hover{transform:none}
+  }
+  :focus-visible{outline:2px solid var(--signal);outline-offset:3px;border-radius:4px}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">saudamini<b>.</b>khare<b>()</b></div>
+    <div class="navlinks">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow reveal">Generative AI Engineer · Tempe, AZ</div>
+    <h1 class="reveal">I build the<br/>agents that <em>reason,</em><br/>retrieve &amp; ship.</h1>
+    <p class="lede reveal">I design <b>LLM-powered applications</b> — document QA, code generation, and multi-agent workflows — with LangChain, LangGraph, and AutoGen. Grounded in deep learning, prompt engineering, and production software in Python and C++.</p>
+    <div class="cta-row reveal">
+      <a class="btn primary" href="#contact">Get in touch →</a>
+      <a class="btn ghost" href="https://github.com/SaudaminiKhare" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn ghost" href="https://linkedin.com/in/saudamini-khare/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+    <div class="hero-meta reveal">
+      <div>Currently<span>Cognizant</span></div>
+      <div>Focus<span>Multi-Agent AI</span></div>
+      <div>Stack<span>LangChain · GPT-4</span></div>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-no">01</span>
+      <span class="sec-title">Profile</span>
+      <span class="sec-rule"></span>
+    </div>
+    <div class="split">
+      <div class="about reveal">
+        <p>I'm a <b>Generative AI Engineer</b> who turns large language models into systems people can actually use — retrieval pipelines that answer questions over real documents, assistants that route tasks intelligently, and agent teams that collaborate across the software development lifecycle.</p>
+        <p>Before generative AI, I spent three years at Philips shipping <b>C++ tooling and machine learning pipelines</b> in medical imaging, where a GAN I built cut patient X-ray radiation exposure in half. That mix — rigorous engineering plus applied ML — is how I approach every problem.</p>
+        <p>I hold a <b>Master of Science in Computer Software Engineering</b> from Arizona State University, with earlier training in AI/ML from IIIT Bangalore and a B.Tech in Computer Science from PES University.</p>
+      </div>
+      <div class="reveal">
+        <div class="skillcard">
+          <h4>Languages &amp; Frameworks</h4>
+          <div class="chips">
+            <span class="chip">C++</span><span class="chip">Python</span><span class="chip">SQL</span><span class="chip">C</span>
+            <span class="chip">LangChain</span><span class="chip">LangGraph</span><span class="chip">AutoGen</span><span class="chip">Chainlit</span>
+            <span class="chip">TensorFlow</span><span class="chip">Keras</span><span class="chip">PyTorch</span><span class="chip">Azure</span>
+          </div>
+        </div>
+        <div class="skillcard">
+          <h4>AI / ML</h4>
+          <div class="chips">
+            <span class="chip">Generative AI</span><span class="chip">Deep Learning</span><span class="chip">NLP</span>
+            <span class="chip">GANs</span><span class="chip">Social Network Analysis</span>
+          </div>
+        </div>
+        <div class="skillcard">
+          <h4>Tools &amp; Platforms</h4>
+          <div class="chips">
+            <span class="chip">PostgreSQL</span><span class="chip">OracleSQL</span><span class="chip">MySQL</span>
+            <span class="chip">Git</span><span class="chip">GitHub</span><span class="chip">Jenkins</span><span class="chip">Linux/Unix</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-no">02</span>
+      <span class="sec-title">Experience</span>
+      <span class="sec-rule"></span>
+    </div>
+    <div class="timeline">
+      <article class="job reveal">
+        <div class="job-top">
+          <div class="job-role">Generative AI Engineer <span>— Associate</span></div>
+          <div class="job-when">Dec 2024 — Present</div>
+        </div>
+        <div class="job-co">Cognizant · Tempe, AZ</div>
+        <ul>
+          <li>Built a <b>document Q&amp;A system</b> with LangChain, GPT-4 and FAISS that ingests PDF/DOCX, chunks and embeds content, and answers questions via OpenAI function calling.</li>
+          <li>Developed a LangChain assistant that <b>classifies queries</b> into code-generation or general tasks and routes them through dynamic prompt templates for tailored responses.</li>
+          <li>Designed a <b>multi-agent AutoGen group chat</b> spanning requirements analysis, code generation, test generation and document Q&amp;A — backed by ChromaDB vector memory for context-aware, long-term continuity.</li>
+        </ul>
+      </article>
+
+      <article class="job reveal">
+        <div class="job-top">
+          <div class="job-role">Software Engineer 2</div>
+          <div class="job-when">Jul 2019 — Aug 2022</div>
+        </div>
+        <div class="job-co">Philips India Ltd. · Bangalore</div>
+        <ul>
+          <li>Built a <b>Pix2Pix GAN</b> with imaging specialists to upscale low-dose X-rays to high-dose quality, cutting patient radiation exposure by <b>50%</b>.</li>
+          <li>Deployed a call-classification pipeline (word2vec + Linear SVC) that reduced manual triage from <b>3 weeks to 30 minutes</b> and condensed 100+ issue categories down to 15.</li>
+          <li>Developed a C++ diagnostic tool to pinpoint corruption in the image pipeline, validated with the GTest framework.</li>
+          <li>Prototyped UX and image-quality POCs, including resizable UI panels and 4K rendering at lower resolutions.</li>
+        </ul>
+      </article>
+
+      <article class="job reveal">
+        <div class="job-top">
+          <div class="job-role">Software Engineering Intern</div>
+          <div class="job-when">Jan 2019 — Jul 2019</div>
+        </div>
+        <div class="job-co">Philips India Ltd. · Bangalore</div>
+        <ul>
+          <li>Built a Python remote-connectivity package for X-ray machines, integrated with the service tool to cut machine access time by <b>50%</b> and reduce on-site visits.</li>
+        </ul>
+      </article>
+
+      <article class="job reveal">
+        <div class="job-top">
+          <div class="job-role">Data Science Intern</div>
+          <div class="job-when">Jun 2018 — Aug 2018</div>
+        </div>
+        <div class="job-co">IBM India Ltd. · Bangalore</div>
+        <ul>
+          <li>Surfaced the top 10 usability issues in SBI's YONO banking app by analyzing Play Store reviews with Watson Natural Language Understanding.</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-no">03</span>
+      <span class="sec-title">Selected Work</span>
+      <span class="sec-rule"></span>
+    </div>
+    <div class="proj-grid">
+      <article class="proj reveal" data-tilt>
+        <div class="proj-tag">Master's Thesis · 2023–2024</div>
+        <h3>Thoracic Pathology Classification &amp; Localization</h3>
+        <p>A deep learning framework combining Swin Transformers, custom CNNs and ensemble methods to classify 15 thoracic diseases and localize abnormalities on the NIH Chest X-ray dataset.</p>
+        <div class="metric">avg AUC 0.60 · 15 disease classes · spatial localization</div>
+      </article>
+
+      <article class="proj reveal" data-tilt>
+        <div class="proj-tag">Production · Cognizant</div>
+        <h3>SDLC Multi-Agent Assistant</h3>
+        <p>An AutoGen group-chat system where specialized agents handle requirements, code, tests and document Q&amp;A, with ChromaDB-backed persistent memory for context-aware retrieval.</p>
+        <div class="metric">AutoGen · ChromaDB · GPT-4 · vector memory</div>
+      </article>
+
+      <article class="proj reveal" data-tilt>
+        <div class="proj-tag">Production · Cognizant</div>
+        <h3>Document Q&amp;A over PDF / DOCX</h3>
+        <p>A retrieval pipeline that chunks and embeds uploaded documents, then answers natural-language questions through OpenAI function calling.</p>
+        <div class="metric">LangChain · GPT-4 · FAISS embeddings</div>
+      </article>
+
+      <article class="proj reveal" data-tilt>
+        <div class="proj-tag">Medical Imaging · Philips</div>
+        <h3>Low-Dose X-ray Enhancement GAN</h3>
+        <p>A Pix2Pix GAN translating low-dosage X-rays into high-dosage quality, reducing the need for repeat scans and lowering patient radiation exposure.</p>
+        <div class="metric">−50% radiation exposure · Pix2Pix · clinical collaboration</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="publication">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-no">04</span>
+      <span class="sec-title">Publication</span>
+      <span class="sec-rule"></span>
+    </div>
+    <div class="pub reveal">
+      <div>
+        <h3>Predicting Protein-Protein Interaction in Multi-layer Blood Cell PPI Networks</h3>
+        <div class="pub-meta">Springer · Advanced Informatics for Computing Research · Jun 2019</div>
+      </div>
+      <a class="btn ghost" href="https://doi.org/10.1007/978-981-15-0111-1_22" target="_blank" rel="noopener">View DOI →</a>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="wrap">
+    <h2 class="reveal">Let's build something that <em>thinks.</em></h2>
+    <p class="reveal">Open to conversations about generative AI, multi-agent systems, and applied machine learning.</p>
+    <div class="contact-links reveal">
+      <a class="btn primary" href="mailto:skhare10@asu.edu">skhare10@asu.edu</a>
+      <a class="btn ghost" href="https://linkedin.com/in/saudamini-khare/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn ghost" href="https://github.com/SaudaminiKhare" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Saudamini Khare</span>
+    <span>Built with intent · Tempe, Arizona</span>
+  </div>
+</footer>
+
+<script>
+  // scroll reveal
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.12,rootMargin:"0px 0px -40px 0px"});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{ el.style.transitionDelay=(i%4*60)+'ms'; io.observe(el); });
+
+  // project cursor glow
+  document.querySelectorAll('.proj').forEach(card=>{
+    card.addEventListener('pointermove',e=>{
+      const r=card.getBoundingClientRect();
+      card.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');
+      card.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%');
+    });
+  });
+</script>
+</body>
+</html>
